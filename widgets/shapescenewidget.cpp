@@ -6,22 +6,21 @@ ShapeSceneWidget::ShapeSceneWidget(QObject *parent)
     //САМОЕ ВАЖНО! Задание порядка обхода элементов по сцене, его надо отключить
     //иначе с управлением мышкой проблемы
     setItemIndexMethod(QGraphicsScene::NoIndex);
+
+    //Групповой элемент не дефолтный
+    auto *group = new Group(QList<MyShape*>(
+                                {new Circle(QPoint(200, 200), QPoint(-200, -200)),
+                                 new Triangle(QPoint(150, 150), QPoint(-50, -50)),
+                                 new Rectangle(QPoint(100, 100), QPoint(0, 0))
+                                }));
+
+    addItem(group);
 }
 
 void ShapeSceneWidget::mousePressEvent(QGraphicsSceneMouseEvent *event)
 {
     auto *item = itemAt(event->scenePos(), QTransform());
     if (item != nullptr) sendEvent(item, event);
-
-    if (event->modifiers() == Qt::ControlModifier) {
-        item->setSelected(true);
-    }
-
-    if (!selectedItems().isEmpty() && event->button() == Qt::RightButton) {
-        QList<MyShape *> list;
-        for (auto *shape: selectedItems()) list.append(dynamic_cast<MyShape*>(shape));
-        addItem(new Group(list));
-    }
 }
 
 void ShapeSceneWidget::mouseMoveEvent(QGraphicsSceneMouseEvent *event)

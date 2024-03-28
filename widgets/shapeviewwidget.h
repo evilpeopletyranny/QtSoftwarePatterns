@@ -6,7 +6,6 @@
 
 #include "shapescenewidget.h"
 #include "shapes/myshape.h"
-#include "shapes/group/group.h"
 #include "shapes/rectangles/rectangle.h"
 #include "shapes/triangles/triangle.h"
 #include "shapes/circles/circle.h"

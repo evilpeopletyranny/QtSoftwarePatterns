@@ -11,6 +11,7 @@ Rectangle::Rectangle(QPoint leftTopPoint,
                 color,
                 penStyle)
 {
+
 }
 
 Rectangle::~Rectangle()
@@ -18,14 +19,37 @@ Rectangle::~Rectangle()
 
 }
 
+QRectF Rectangle::boundingRect() const
+{
+    return shape().boundingRect();
+}
+
+QPainterPath Rectangle::shape() const
+{
+    QPainterPath path;
+    path.addPolygon(getShapePolygon());
+    return path;
+}
+
 void Rectangle::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
 {
     painter->setBrush(QBrush(color));   //меняем цвет заливки
     painter->setPen(penStyle);          //меняем тип линии
 
-    //рисуем прямоугольник
-    painter->drawRect(QRectF(leftTopPoint, rightBotPoint));
+    //рисуем полигон фигуры
+    painter->drawPolygon(getShapePolygon());
 
     Q_UNUSED(option);   //Чтобы Qt не ругалось на неиспользуемый параметр.
     Q_UNUSED(widget);   //Чтобы Qt не ругалось на неиспользуемый параметр.
+}
+
+QPolygon Rectangle::getShapePolygon() const
+{
+    QPolygon polygon;
+    polygon << leftTopPoint;
+    polygon << QPoint(leftTopPoint.x(), rightBotPoint.y());
+    polygon << rightBotPoint;
+    polygon << QPoint(rightBotPoint.x(), leftTopPoint.y());
+    polygon << leftTopPoint;
+    return polygon;
 }

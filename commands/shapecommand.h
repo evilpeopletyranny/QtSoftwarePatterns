@@ -30,22 +30,16 @@ public:
                           Qt::PenStyle penStyle = Qt::SolidLine);
 
     ShapeType getShapeType() const;
-    void setShapeType(ShapeType newShapeType);
 
     QPoint getLeftTopPoint() const;
-    void setLeftTopPoint(QPoint newLeftTopPoint);
 
     QPoint getRightBotPoint() const;
-    void setRightBotPoint(QPoint newRightBotPoint);
 
     Qt::PenStyle getPenStyle() const;
-    void setPenStyle(Qt::PenStyle newPenStyle);
 
     qreal getRotation() const;
-    void setRotation(qreal newRotation);
 
     const QColor &getColor() const;
-    void setColor(const QColor &newColor);
 
 private:
     ShapeType shapeType;        //тип фигуры

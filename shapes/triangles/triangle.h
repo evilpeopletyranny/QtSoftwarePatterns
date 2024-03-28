@@ -26,11 +26,10 @@ public:
                     Qt::PenStyle penStyle = Qt::SolidLine);
     ~Triangle();
 
-protected:
-    /**
-     * Переопределяем рисование для треугольника
-     */
+    QRectF boundingRect() const override;
+    QPainterPath shape() const override;
     void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget) override;
+    QPolygon getShapePolygon() const override;
 };
 
 #endif // TRIANGLE_H

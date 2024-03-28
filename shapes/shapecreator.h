@@ -23,10 +23,10 @@ public:
      * @return созданная фигура
      */
     virtual MyShape *createShape(QPoint leftTopPoint,
-                               QPoint rightBotPoint,
-                               qreal rotation = 0,
-                               QColor color = QColor(255, 255, 255),
-                               Qt::PenStyle penStyle = Qt::SolidLine) = 0;       //фабричный метод создания фигуры
+                                 QPoint rightBotPoint,
+                                 qreal rotation = 0,
+                                 QColor color = QColor(255, 255, 255),
+                                 Qt::PenStyle penStyle = Qt::SolidLine) = 0;       //фабричный метод создания фигуры
 
     /**
      * Фабричный метод создания фигуры через команду

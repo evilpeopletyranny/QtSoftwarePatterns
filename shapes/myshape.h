@@ -33,10 +33,10 @@ public:
      * @param penStyle - тип линии
      */
     explicit MyShape(QPoint leftTopPoint,
-                   QPoint rightBotPoint,
-                   qreal rotation = 0,
-                   QColor color = QColor(255, 255, 255),
-                   Qt::PenStyle penStyle = Qt::SolidLine);
+                     QPoint rightBotPoint,
+                     qreal rotation = 0,
+                     QColor color = QColor(255, 255, 255),
+                     Qt::PenStyle penStyle = Qt::SolidLine);
 
 
     virtual ~MyShape(){};
@@ -59,23 +59,33 @@ public:
     void rotate(int degree);
 
     QPoint getLeftTopPoint() const;
-    void setLeftTopPoint(QPoint newLeftTopPoint);
 
     QPoint getRightBotPoint() const;
-    void setRightBotPoint(QPoint newRightBotPoint);
-
 
     Qt::PenStyle getPenStyle() const;
-    void setPenStyle(Qt::PenStyle newPenStyle);
 
     const QColor &getColor() const;
-    void setColor(const QColor &newColor);
 
     /**
      * Метод отрисовки фигуры.
      * Для каждой фигуры свой.
+     * Использует полигон фигуры.
      */
     virtual void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget) = 0;
+
+    /**
+     * Для сложных фигур, которые являются примитивом (например собственно писанная группа фигур, как хочет Лепехин)
+     * не достаточно метода boundingRect, посколько он выделяет лишь квадртаную область.
+     * Мало того, даже для круга и треугольника площадь взаимодействия будет в виде квадрата с пустыми угалми, которые также
+     * будут плоащлью взаимодествия.
+     *
+     * Для этого необходимо использовать метод shape() и брать boundingRect() от него.
+     * А поскольку и в shape() и в paint() мы в общем случае может работать через полигон, то определим
+     * метод расчета полигона для каждой фигуры.
+     *
+     * @return полигон фигуры
+     */
+    virtual QPolygon getShapePolygon() const = 0;
 
 
 protected:
@@ -88,23 +98,24 @@ protected:
     Qt::PenStyle penStyle;      //стиль линии
 
     /**
-     * Метод, выделяющий место по фигуру на сцене.
-     * Возвращаемый QRectF это та область, в которой можно будет взаимодействовать фигура.
-     * QRectF не равен размеру фигуры.
+     * Многострадальный boundingRect(), который возвращает площадь взаимодействия с фигурой. Без него (с пустым QRectF) фигура
+     * не доступна для клика мышкой.
      *
-     * Например: при пустом QRectF вы не сможете никак кликнуть на фигуру, потому что у нее нет
-     * области для взаимодействия.
+     * Для работы с неквадратными фигурами необходимо внутри получать путь отрисовки через метод shape() и уже по нему вызывать boundingRect()
      */
-    QRectF boundingRect() const;
+    virtual QRectF boundingRect() const = 0;
 
+    /**
+     * Метод определяющий путь рисования сложных фигур.
+     * Нужен для более правильного и продвинутого boundingRect()
+     */
+    virtual QPainterPath shape() const = 0;
 
     /**
      * Реакция на движение колесика мыши, когда курсор на фигуре. (Зависит от boundingRect кста).
      * @param event событие движения колесика мыши
      */
     void wheelEvent(QGraphicsSceneWheelEvent *event);
-
-
 
 private:
     /**
@@ -115,9 +126,25 @@ private:
     static EventHandler *eventChain;
     static EventHandler *initChain();
 
+    //Для некоторых операций: смена курсора, выделение множества фигур, выставление фигуры на передний план
+    //Стандартного поведения через флаги недостаточно, поэтому переопределим методы взаимодействия мышью
+
+    /**
+     * Действия на нажатие клавишами мыши по фигуре
+     */
     void mousePressEvent(QGraphicsSceneMouseEvent *event);
+
+    /**
+     * Обработка движение мыши.
+     * Зажали ЛКМ и двигаем фигуру.
+     */
     void mouseMoveEvent(QGraphicsSceneMouseEvent *event);
+
+    /**
+     * Обработка когда отпусаются кнопки мыши.
+     */
     void mouseReleaseEvent(QGraphicsSceneMouseEvent *event);
+
 };
 
 /**

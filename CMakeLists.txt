@@ -42,8 +42,8 @@ set(PROJECT_SOURCES
         shapes/triangles/triangle.h
         shapes/triangles/trianglecreator.cpp
         shapes/triangles/trianglecreator.h
-        shapes/group/group.cpp
-        shapes/group/group.h
+        shapes/groups/group.cpp
+        shapes/groups/group.h
         commands/shapecommand.cpp
         commands/shapecommand.h
         widgets/shapemediatorwidget.cpp

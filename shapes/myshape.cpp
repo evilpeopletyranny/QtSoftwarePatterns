@@ -2,8 +2,12 @@
 #include "shapes/chain/wheeleventhandler.h"
 #include "shapes/chain/wheelshifteventhandler.h"
 
+//Создание цепочки обратки событий колеса мыши
 EventHandler *MyShape::eventChain = initChain();
 
+//За счет цепочки, теперь если нам необходимо добавить новый обработчик,
+//то мы определяем его класс и просто добавляем в цепочку.
+//Дальше цепочка появиться и в других местах
 EventHandler *MyShape::initChain()
 {
     EventHandler *handler = new WheelEventHandler(Qt::NoModifier);
@@ -13,19 +17,22 @@ EventHandler *MyShape::initChain()
 
 void MyShape::mousePressEvent(QGraphicsSceneMouseEvent *event)
 {
-
+    //Фигура, на которой мы зажали мышь вытаскивается на передний план
+    setZValue(1);
 }
 
 void MyShape::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 {
-    setPos(event->scenePos());
+    //При зажатии и движении меняем курсор на руку и двигаем фигуру
     if (event->buttons() & Qt::LeftButton) setCursor(QCursor(Qt::ClosedHandCursor));
+    setPos(event->scenePos());
 }
 
 void MyShape::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 {
+    //При отпускании кнопки мыши возвращаем курсор стрелочку
     this->setCursor(QCursor(Qt::ArrowCursor));
-    Q_UNUSED(event);
+    setZValue(0);
 }
 
 MyShape::MyShape(QPoint leftTopPoint,
@@ -41,12 +48,15 @@ MyShape::MyShape(QPoint leftTopPoint,
 
     setRotation(rotation);
 
-    //Флаги на выделение, движение, изменение фигуры
-    //Важно, за счет этого они двигуются и реагируют на действия
-    setFlags(QGraphicsItem::ItemIsSelectable|
-             QGraphicsItem::ItemIsMovable|
-             QGraphicsItem::ItemSendsGeometryChanges|
-             QGraphicsItem::ItemIsFocusable);
+/*
+    Поскольку мы переопределяем стандартное поведение фигур - флаги то и не нужны.
+    Здесь они лежать чтобы просто не потерять
+*/
+
+//    setFlags(QGraphicsItem::ItemIsSelectable|
+//             QGraphicsItem::ItemIsMovable|
+//             QGraphicsItem::ItemSendsGeometryChanges|
+//             QGraphicsItem::ItemIsFocusable);
 }
 
 QPoint MyShape::getLeftTopPoint() const
@@ -54,28 +64,14 @@ QPoint MyShape::getLeftTopPoint() const
     return leftTopPoint;
 }
 
-void MyShape::setLeftTopPoint(QPoint newLeftTopPoint)
-{
-    leftTopPoint = newLeftTopPoint;
-}
-
 QPoint MyShape::getRightBotPoint() const
 {
     return rightBotPoint;
 }
 
-void MyShape::setRightBotPoint(QPoint newRightBotPoint)
-{
-    rightBotPoint = newRightBotPoint;
-}
-
-QRectF MyShape::boundingRect() const
-{
-    return QRectF(leftTopPoint, rightBotPoint);
-}
-
 void MyShape::wheelEvent(QGraphicsSceneWheelEvent *event)
 {
+    //Вызов цепочки обработчиков движения колеса мыши
     MyShape::eventChain->handle(event, this);
     update();
     scene()->update();
@@ -97,17 +93,7 @@ Qt::PenStyle MyShape::getPenStyle() const
     return penStyle;
 }
 
-void MyShape::setPenStyle(Qt::PenStyle newPenStyle)
-{
-    penStyle = newPenStyle;
-}
-
 const QColor &MyShape::getColor() const
 {
     return color;
-}
-
-void MyShape::setColor(const QColor &newColor)
-{
-    color = newColor;
 }

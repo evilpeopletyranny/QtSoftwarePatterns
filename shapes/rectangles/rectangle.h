@@ -23,13 +23,12 @@ public:
                        qreal rotation = 0,
                        QColor color = QColor(255, 255, 255),
                        Qt::PenStyle penStyle = Qt::SolidLine);
-    ~Rectangle();
+    ~Rectangle(); 
 
-protected:
-    /**
-     * ПереопределЯем рисование для прямоугольника
-     */
+    QRectF boundingRect() const override;
+    QPainterPath shape() const override;
     void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget) override;
+    QPolygon getShapePolygon() const override;
 };
 
 #endif // RECTANGLE_H
