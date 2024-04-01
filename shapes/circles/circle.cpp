@@ -19,11 +19,6 @@ Circle::~Circle()
 
 }
 
-QRectF Circle::boundingRect() const
-{
-    return shape().boundingRect();
-}
-
 QPainterPath Circle::shape() const
 {
     QPainterPath path;

@@ -97,3 +97,21 @@ const QColor &MyShape::getColor() const
 {
     return color;
 }
+
+void MyShape::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
+{
+    //тяжелые математические расчеты, чтобы вписать треугольник в прямоугольник
+    painter->setBrush(QBrush(color));   //меняем цвет заливки
+    painter->setPen(penStyle);          //меняем тип линии
+
+    //Рисуем треугольник через полигон
+    painter->drawPolygon(getShapePolygon());
+
+    Q_UNUSED(option);   //Чтобы Qt не ругалось на неиспользуемый параметр.
+    Q_UNUSED(widget);   //Чтобы Qt не ругалось на неиспользуемый параметр.
+}
+
+QRectF MyShape::boundingRect() const
+{
+    return shape().boundingRect();
+}

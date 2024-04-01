@@ -25,7 +25,6 @@ public:
                        Qt::PenStyle penStyle = Qt::SolidLine);
     ~Rectangle(); 
 
-    QRectF boundingRect() const override;
     QPainterPath shape() const override;
     void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget) override;
     QPolygon getShapePolygon() const override;

@@ -9,13 +9,14 @@
 /**
  * Собственный класс группы фигур.
  * Над ним пока ведется работа.
+ *
+ * Компоновщик фигур.
  */
 class Group : public MyShape
 {
 public:
     explicit Group(QList<MyShape *> shapeList);
 
-    QRectF boundingRect() const;
     QPainterPath shape() const;
     void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget);
 

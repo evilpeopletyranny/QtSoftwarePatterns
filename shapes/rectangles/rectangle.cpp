@@ -19,11 +19,6 @@ Rectangle::~Rectangle()
 
 }
 
-QRectF Rectangle::boundingRect() const
-{
-    return shape().boundingRect();
-}
-
 QPainterPath Rectangle::shape() const
 {
     QPainterPath path;

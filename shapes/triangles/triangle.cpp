@@ -19,11 +19,6 @@ Triangle::~Triangle()
 
 }
 
-QRectF Triangle::boundingRect() const
-{
-    return shape().boundingRect();
-}
-
 QPainterPath Triangle::shape() const
 {
     QPainterPath path;

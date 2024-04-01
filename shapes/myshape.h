@@ -9,6 +9,7 @@
 #include <QGraphicsScene>
 #include <QColor>
 #include <QRectF>
+#include <QPainter>
 
 class EventHandler;
 
@@ -71,7 +72,7 @@ public:
      * Для каждой фигуры свой.
      * Использует полигон фигуры.
      */
-    virtual void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget) = 0;
+    virtual void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget);
 
     /**
      * Для сложных фигур, которые являются примитивом (например собственно писанная группа фигур, как хочет Лепехин)
@@ -103,7 +104,7 @@ protected:
      *
      * Для работы с неквадратными фигурами необходимо внутри получать путь отрисовки через метод shape() и уже по нему вызывать boundingRect()
      */
-    virtual QRectF boundingRect() const = 0;
+    QRectF boundingRect() const override;
 
     /**
      * Метод определяющий путь рисования сложных фигур.

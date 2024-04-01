@@ -6,11 +6,6 @@ Group::Group(QList<MyShape *> shapeList) :
     this->shapeList = shapeList;
 }
 
-QRectF Group::boundingRect() const
-{
-    return shape().boundingRect();
-}
-
 QPainterPath Group::shape() const
 {
     QPainterPath path;

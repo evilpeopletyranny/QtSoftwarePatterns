@@ -7,16 +7,11 @@
 /**
  * Конкретный создатель фигуры типа квадрат.
  * Реализация шаблоного метода.
- *
- * Таже является синглтоном. (Прост, оно на самом деле не надо)
  */
 class RectangleCreator : public virtual ShapeCreator
 {
 public:
-    /**
-     * @return единственный экземпляр
-     */
-    static RectangleCreator *getInstance();
+    explicit RectangleCreator();
 
     /**
      * Реализация метода создания прямоугольника
@@ -33,10 +28,7 @@ public:
     MyShape *createShape(ShapeCommand *command) override;
 
 private:
-    explicit RectangleCreator();
     ~RectangleCreator();
-
-    static RectangleCreator *instance;      //ссылка на едиственный экземпляр
 };
 
 #endif // RECTANGLECREATOR_H

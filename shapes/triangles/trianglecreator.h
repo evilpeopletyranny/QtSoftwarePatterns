@@ -14,19 +14,16 @@
 class TriangleCreator : public virtual ShapeCreator
 {
 public:
-    /**
-     * @return единственный экземпляр
-     */
-    static TriangleCreator *getInstance();
+    explicit TriangleCreator();
 
     /**
      * Реализация метода создания треугольника
      */
     MyShape *createShape(QPoint leftTopPoint,
-                       QPoint rightBotPoint,
-                       qreal rotation = 0,
-                       QColor color = QColor(255, 255, 255),
-                       Qt::PenStyle penStyle = Qt::SolidLine) override;
+                         QPoint rightBotPoint,
+                         qreal rotation = 0,
+                         QColor color = QColor(255, 255, 255),
+                         Qt::PenStyle penStyle = Qt::SolidLine) override;
 
     /**
      * Реализация метода создания треугольника через команду
@@ -34,10 +31,7 @@ public:
     MyShape *createShape(ShapeCommand *command) override;
 
 private:
-    explicit TriangleCreator();
     ~TriangleCreator();
-
-    static TriangleCreator *instance;       //ссылка на едиственный экземпляр
 };
 
 #endif // TRIANGLECREATOR_H
